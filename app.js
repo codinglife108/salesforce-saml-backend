@@ -175,7 +175,7 @@ backend.post(
 // Default route to check if the server is running
 backend.get('/', (req, res) => {
     console.log('>>status');
-    res.status(200).send('ok');
+    res.status(200).send('ok1');
 });
 
 // redirect test
