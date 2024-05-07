@@ -109,6 +109,7 @@ backend.get(
         failureFlash: true,
     }),
     (req, res, next) => {
+        console.log(req.isAuthenticated(), req.session.user, process.env.FRONTEND_URL, "Login")
         // If the user is authenticated and a session user exists, redirect them to the frontend URL.
         if (req.isAuthenticated() && req.session.user) {
             res.redirect(process.env.FRONTEND_URL);
@@ -165,6 +166,9 @@ backend.post(
             if (err) {
                 console.error('Session save error:', err);
             }
+
+            console.log(process.env.FRONTEND_URL, "Callback")
+
             if (token) {
                 res.redirect(`${process.env.FRONTEND_URL}`);
             }
