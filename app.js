@@ -109,7 +109,9 @@ backend.get(
         failureFlash: true,
     }),
     (req, res, next) => {
+
         console.log(req.isAuthenticated(), req.session.user, process.env.FRONTEND_URL, "Login")
+
         // If the user is authenticated and a session user exists, redirect them to the frontend URL.
         if (req.isAuthenticated() && req.session.user) {
             res.redirect(process.env.FRONTEND_URL);
@@ -160,7 +162,9 @@ backend.post(
         failureFlash: true,
     }),
     (req, res) => {
+
         console.log('>>>req.session.passport: callback', req.session.passport.user);
+
         const token = req.session.passport?.user?.token;
         req.session.user = req.session.passport.user;
         req.session.save((err) => {
