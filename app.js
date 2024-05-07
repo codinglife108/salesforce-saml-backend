@@ -10,7 +10,6 @@ const path = require('path');
 const morgan = require('morgan');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
-const qs = require('query-strings-parser')  
 
 const app = express();
 const backend = express.Router();
@@ -46,7 +45,6 @@ app.use((req, res, next) => {
 const PORT = process.env.PORT || 8000;
 app.use(morgan('dev'));
 app.use(cors());
-app.use(qs())
 
 // Express built-in body parser
 app.use(express.json({ limit: '15360mb' }));
@@ -123,7 +121,6 @@ backend.get(
 
 // When the page refreshes or reloads, the frontend calls this endpoint to authenticate the user, allowing conditional rendering of components.
 backend.get('/getlogin', (req, res) => {
-    console.log(req.query.filters)
     // If the user is authenticated and a session user exists, return authentication status and user information.
     if (req.isAuthenticated() && req.session.user) {
         return res.status(200).json({
@@ -161,9 +158,7 @@ backend.post(
         failureFlash: true,
     }),
     (req, res) => {
-
-        console.log('>>>req.session.passport: callback', req.session.passport.user, req.sessionID);
-
+        console.log('>>>req.session.passport: callback', req.session.passport.user);
         const token = req.session.passport?.user?.token;
         req.session.user = req.session.passport.user;
         req.session.save((err) => {
@@ -196,12 +191,3 @@ app.use(process.env.ROUTE_PATH, backend);
 app.listen(PORT, () => {
     console.log(`Server started on http://localhost:${PORT}`);
 });
-
-const init = () => {
-    const db = new SQLiteStore({ db: 'sessions.db', dir: './' })
-    db.get("djAwQPIJf6MdKxtbPniaSlCo1ht8ldT5", (err, data) => {
-        console.log(data?.user)
-    })
-}
-
-init()
