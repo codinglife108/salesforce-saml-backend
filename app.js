@@ -148,9 +148,7 @@ backend.get('/logout', (req, res) => {
         res.clearCookie('ascdmainsalesforcesite');
 
         // Redirect the user to the Salesforce logout page.
-        // res.redirect(process.env.SALESFORCE_LOGOUT);
-        res.redirect('https://iste--staging.sandbox.my.site.com/secur/logout.jsp');
-
+        res.redirect(process.env.SALESFORCE_LOGOUT);
     });
 });
 
