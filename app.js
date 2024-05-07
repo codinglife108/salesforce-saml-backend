@@ -96,6 +96,7 @@ passport.use(
                 nameQualifier: profile.nameQualifier,
                 spNameQualifier: profile.spNameQualifier,
                 token: dynamicToken,
+                photo: profile.photo,
             });
         }
     )
@@ -109,12 +110,9 @@ backend.get(
         failureFlash: true,
     }),
     (req, res, next) => {
-
-        console.log(req.isAuthenticated(), req.session.user, process.env.FRONTEND_URL, "Login")
-
         // If the user is authenticated and a session user exists, redirect them to the frontend URL.
         if (req.isAuthenticated() && req.session.user) {
-            res.redirect(process.env.FRONTEND_URL);
+            res.redirect(`${process.env.FRONTEND_URL}`);
         } else {
             next();
         }
@@ -148,9 +146,7 @@ backend.get('/logout', (req, res) => {
         res.clearCookie('ascdmainsalesforcesite');
 
         // Redirect the user to the Salesforce logout page.
-        // res.redirect(process.env.SALESFORCE_LOGOUT);
         res.redirect('https://iste--staging.sandbox.my.site.com/secur/logout.jsp');
-
     });
 });
 
@@ -162,9 +158,7 @@ backend.post(
         failureFlash: true,
     }),
     (req, res) => {
-
         console.log('>>>req.session.passport: callback', req.session.passport.user);
-
         const token = req.session.passport?.user?.token;
         req.session.user = req.session.passport.user;
         req.session.save((err) => {
@@ -172,9 +166,6 @@ backend.post(
             if (err) {
                 console.error('Session save error:', err);
             }
-
-            console.log(process.env.FRONTEND_URL, "Callback")
-
             if (token) {
                 res.redirect(`${process.env.FRONTEND_URL}`);
             }
@@ -185,7 +176,7 @@ backend.post(
 // Default route to check if the server is running
 backend.get('/', (req, res) => {
     console.log('>>status');
-    res.status(200).send('ok1');
+    res.status(200).send('ok');
 });
 
 // redirect test
